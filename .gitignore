@@ -22,8 +22,11 @@ target/
 .DS_Store
 Thumbs.db
 
-# Logs
+# Logs and generated review files
 *.log
+build-output.txt
+*-codebase.txt
+vaultify-project-structure.txt
 
 # Environment / Secrets
 .env
@@ -31,8 +34,6 @@ Thumbs.db
 **/src/main/resources/application.properties
 **/src/main/resources/application-*.properties
 
-# Build outputs
-build-output.txt
-
-# Allow safe Render profile config
+# Allow safe example/deployment config files
+!vaultify-backend/src/main/resources/application-example.properties
 !vaultify-backend/src/main/resources/application-render.properties
