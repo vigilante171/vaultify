@@ -1,0 +1,118 @@
+<section class="clients-page">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">OWNER</span>
+      <h1 class="page-title">Client Book</h1>
+      <p class="page-subtitle">
+        Build a polished client registry with visits, preferences, and spending history.
+      </p>
+    </div>
+
+    <button class="luxury-button" type="button" (click)="showCreateForm = !showCreateForm">
+      {{ showCreateForm ? 'Close Form' : '+ New Client' }}
+    </button>
+  </div>
+
+  @if (showCreateForm) {
+    <form class="create-form luxury-card" (ngSubmit)="createClient()">
+      <div class="form-grid">
+        <label>
+          Full Name
+          <input class="input" name="fullName" [(ngModel)]="form.fullName" />
+        </label>
+
+        <label>
+          Phone
+          <input class="input" name="phone" [(ngModel)]="form.phone" />
+        </label>
+
+        <label>
+          Email
+          <input class="input" type="email" name="email" [(ngModel)]="form.email" />
+        </label>
+
+        <label>
+          Gender
+          <select class="input" name="gender" [(ngModel)]="form.gender">
+            @for (gender of genders; track gender) {
+              <option [value]="gender">{{ gender }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="full">
+          Notes
+          <input class="input" name="notes" [(ngModel)]="form.notes" />
+        </label>
+      </div>
+
+      <button class="luxury-button" type="submit" [disabled]="saving">
+        {{ saving ? 'Creating...' : 'Create Client' }}
+      </button>
+    </form>
+  }
+
+  @if (errorMessage) {
+    <div class="message error luxury-card">{{ errorMessage }}</div>
+  }
+
+  @if (successMessage) {
+    <div class="message success luxury-card">{{ successMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="message luxury-card">Loading clients...</div>
+  }
+
+  @if (!loading) {
+    <div class="table-wrap luxury-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Phone</th>
+            <th>Gender</th>
+            <th>Visits</th>
+            <th>Total Spent</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (client of clients; track client.id) {
+            <tr>
+              <td>
+                <strong>{{ client.fullName }}</strong>
+                <span>{{ client.email || 'No email' }}</span>
+              </td>
+
+              <td>{{ client.phone }}</td>
+              <td>{{ client.gender }}</td>
+              <td>{{ client.totalVisits || 0 }}</td>
+              <td>{{ client.totalSpent || 0 }} TND</td>
+
+              <td>
+                <span class="pill" [class.good]="client.active" [class.bad]="!client.active">
+                  {{ client.active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+
+              <td>
+                <button class="mini-button" type="button" (click)="disableClient(client)">
+                  Disable
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7">
+                <div class="empty-state">No clients found.</div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

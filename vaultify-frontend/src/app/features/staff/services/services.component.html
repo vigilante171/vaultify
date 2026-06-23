@@ -1,0 +1,61 @@
+<section class="staff-page">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">STAFF</span>
+      <h1 class="page-title">Services</h1>
+      <p class="page-subtitle">
+        View the available salon service catalog.
+      </p>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <div class="message error luxury-card">{{ errorMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="message luxury-card">Loading services...</div>
+  }
+
+  @if (!loading) {
+    <div class="table-wrap luxury-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Duration</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (service of services; track $index) {
+            <tr>
+              <td>
+                <strong>{{ service.name }}</strong>
+                <span>{{ service.description || 'No description' }}</span>
+              </td>
+
+              <td>{{ service.category }}</td>
+              <td>{{ service.price }} TND</td>
+              <td>{{ service.durationMinutes }} min</td>
+              <td>
+                <span class="pill" [class.good]="service.active" [class.bad]="!service.active">
+                  {{ service.active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5">
+                <div class="empty-state">No services found.</div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

@@ -1,0 +1,63 @@
+<section class="staff-page">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">STAFF</span>
+      <h1 class="page-title">Clients</h1>
+      <p class="page-subtitle">
+        View salon clients and their visit history.
+      </p>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <div class="message error luxury-card">{{ errorMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="message luxury-card">Loading clients...</div>
+  }
+
+  @if (!loading) {
+    <div class="table-wrap luxury-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Phone</th>
+            <th>Gender</th>
+            <th>Visits</th>
+            <th>Total Spent</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (client of clients; track $index) {
+            <tr>
+              <td>
+                <strong>{{ client.fullName }}</strong>
+                <span>{{ client.email || 'No email' }}</span>
+              </td>
+
+              <td>{{ client.phone }}</td>
+              <td>{{ client.gender }}</td>
+              <td>{{ client.totalVisits || 0 }}</td>
+              <td>{{ client.totalSpent || 0 }} TND</td>
+              <td>
+                <span class="pill" [class.good]="client.active" [class.bad]="!client.active">
+                  {{ client.active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">
+                <div class="empty-state">No clients found.</div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

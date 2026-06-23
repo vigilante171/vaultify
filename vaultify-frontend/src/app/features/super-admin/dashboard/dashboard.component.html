@@ -1,0 +1,61 @@
+<section class="dashboard-page">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">SUPER ADMIN</span>
+      <h1 class="page-title">Vaultify Control Room</h1>
+      <p class="page-subtitle">
+        Monitor all salons, subscriptions, owners, and staff from one refined command center.
+      </p>
+    </div>
+
+    <button class="luxury-button secondary" type="button" (click)="loadDashboard()">
+      Refresh
+    </button>
+  </div>
+
+  @if (loading) {
+    <div class="state-card luxury-card">
+      Loading Super Admin dashboard...
+    </div>
+  }
+
+  @if (errorMessage) {
+    <div class="state-card error-card luxury-card">
+      {{ errorMessage }}
+    </div>
+  }
+
+  @if (!loading && !errorMessage) {
+    <div class="stats-grid">
+      @for (stat of stats; track stat.label) {
+        <article class="stat-card luxury-card">
+          <span>{{ stat.label }}</span>
+          <strong>{{ stat.value }}</strong>
+          <p>{{ stat.hint }}</p>
+        </article>
+      }
+    </div>
+
+    <div class="insight-grid">
+      <article class="luxury-card insight-card">
+        <span class="badge">Subscription pulse</span>
+        <h2>Portfolio health</h2>
+        <p>
+          Active: {{ dashboard?.activeSubscriptions || 0 }},
+          Trial: {{ dashboard?.trialBusinesses || 0 }},
+          Expired: {{ dashboard?.expiredSubscriptions || 0 }},
+          Suspended: {{ dashboard?.suspendedSubscriptions || 0 }}.
+        </p>
+      </article>
+
+      <article class="luxury-card insight-card">
+        <span class="badge">Users</span>
+        <h2>Network access</h2>
+        <p>
+          Vaultify currently manages {{ dashboard?.totalOwners || 0 }} owner accounts
+          and {{ dashboard?.totalStaff || 0 }} staff accounts.
+        </p>
+      </article>
+    </div>
+  }
+</section>

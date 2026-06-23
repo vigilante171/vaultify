@@ -1,0 +1,66 @@
+<section class="owner-dashboard">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">OWNER</span>
+      <h1 class="page-title">
+        {{ dashboard?.businessName || 'Salon Maison' }}
+      </h1>
+      <p class="page-subtitle">
+        Your private workspace for clients, services, staff, appointments, and revenue.
+      </p>
+    </div>
+
+    <button class="luxury-button secondary" type="button" (click)="loadDashboard()">
+      Refresh
+    </button>
+  </div>
+
+  @if (loading) {
+    <div class="message luxury-card">
+      Loading owner dashboard...
+    </div>
+  }
+
+  @if (!loading && errorMessage) {
+    <div class="message error luxury-card">
+      {{ errorMessage }}
+    </div>
+  }
+
+  @if (!loading && !errorMessage && dashboard) {
+    <div class="stats-grid">
+      @for (stat of stats; track stat.label) {
+        <article class="stat-card luxury-card">
+          <span>{{ stat.label }}</span>
+          <strong>{{ stat.value }}</strong>
+          <p>{{ stat.hint }}</p>
+        </article>
+      }
+    </div>
+
+    <div class="insight-grid">
+      <article class="insight-card luxury-card">
+        <span class="badge">{{ dashboard.plan }}</span>
+        <h2>Subscription</h2>
+        <p>
+          Status: {{ dashboard.subscriptionStatus }}.
+          Ends at: {{ dashboard.subscriptionEndDate || '-' }}.
+        </p>
+      </article>
+
+      <article class="insight-card luxury-card">
+        <span class="badge">{{ dashboard.businessType }}</span>
+        <h2>Owner</h2>
+        <p>
+          {{ dashboard.ownerName }}  {{ dashboard.ownerEmail }}
+        </p>
+      </article>
+    </div>
+  }
+
+  @if (!loading && !errorMessage && !dashboard) {
+    <div class="message luxury-card">
+      No dashboard data received.
+    </div>
+  }
+</section>

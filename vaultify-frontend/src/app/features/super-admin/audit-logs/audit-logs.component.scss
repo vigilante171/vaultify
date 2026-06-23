@@ -1,0 +1,59 @@
+.audit-page {
+  display: grid;
+  gap: 1.3rem;
+}
+
+.hero {
+  padding: 2rem;
+  min-height: 230px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  background:
+    radial-gradient(circle at top right, rgba(178, 139, 76, 0.2), transparent 34%),
+    var(--surface);
+}
+
+.hero .page-title {
+  margin-top: 1rem;
+}
+
+.message {
+  padding: 1rem 1.2rem;
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.error {
+  color: var(--danger);
+}
+
+td strong,
+td span {
+  display: block;
+}
+
+td span {
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.pill {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+@media (max-width: 800px) {
+  .hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

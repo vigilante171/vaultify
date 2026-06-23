@@ -1,0 +1,107 @@
+<section class="profile-page">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">OWNER</span>
+      <h1 class="page-title">Owner Profile</h1>
+      <p class="page-subtitle">
+        Manage your account identity and security credentials.
+      </p>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <div class="message error luxury-card">{{ errorMessage }}</div>
+  }
+
+  @if (successMessage) {
+    <div class="message success luxury-card">{{ successMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="message luxury-card">Loading profile...</div>
+  }
+
+  @if (!loading) {
+    <div class="profile-grid">
+      <form class="luxury-card panel" (ngSubmit)="updateProfile()">
+        <div>
+          <span class="badge">IDENTITY</span>
+          <h2>Personal Information</h2>
+          <p>Update the owner account information used inside Vaultify.</p>
+        </div>
+
+        <label>
+          Full Name
+          <input class="input" name="fullName" [(ngModel)]="profileForm.fullName" />
+        </label>
+
+        <label>
+          Email
+          <input class="input" type="email" name="email" [(ngModel)]="profileForm.email" />
+        </label>
+
+        <button class="luxury-button" type="submit" [disabled]="savingProfile">
+          {{ savingProfile ? 'Saving...' : 'Save Profile' }}
+        </button>
+      </form>
+
+      <form class="luxury-card panel" (ngSubmit)="changePassword()">
+        <div>
+          <span class="badge">SECURITY</span>
+          <h2>Change Password</h2>
+          <p>Use a strong password to protect your salon workspace.</p>
+        </div>
+
+        <label>
+          Current Password
+          <input
+            class="input"
+            type="password"
+            name="currentPassword"
+            [(ngModel)]="passwordForm.currentPassword"
+          />
+        </label>
+
+        <label>
+          New Password
+          <input
+            class="input"
+            type="password"
+            name="newPassword"
+            [(ngModel)]="passwordForm.newPassword"
+          />
+        </label>
+
+        <button class="luxury-button" type="submit" [disabled]="savingPassword">
+          {{ savingPassword ? 'Changing...' : 'Change Password' }}
+        </button>
+      </form>
+    </div>
+
+    @if (profile) {
+      <div class="luxury-card summary-card">
+        <span class="badge">ACCOUNT</span>
+
+        <div class="summary-row">
+          <span>Name</span>
+          <strong>{{ profile.fullName }}</strong>
+        </div>
+
+        <div class="summary-row">
+          <span>Email</span>
+          <strong>{{ profile.email }}</strong>
+        </div>
+
+        <div class="summary-row">
+          <span>Role</span>
+          <strong>{{ profile.role }}</strong>
+        </div>
+
+        <div class="summary-row">
+          <span>Status</span>
+          <strong>{{ profile.active ? 'Active' : 'Inactive' }}</strong>
+        </div>
+      </div>
+    }
+  }
+</section>

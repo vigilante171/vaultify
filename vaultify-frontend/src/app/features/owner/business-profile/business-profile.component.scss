@@ -1,0 +1,89 @@
+.profile-page {
+  display: grid;
+  gap: 1.3rem;
+}
+
+.hero,
+.profile-form {
+  padding: 2rem;
+}
+
+.hero {
+  min-height: 230px;
+  display: flex;
+  align-items: flex-end;
+  background:
+    radial-gradient(circle at top right, rgba(178, 139, 76, 0.22), transparent 34%),
+    var(--surface);
+}
+
+.hero .page-title {
+  margin-top: 1rem;
+}
+
+.message {
+  padding: 1rem 1.2rem;
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.error {
+  color: var(--danger);
+}
+
+.success {
+  color: var(--success);
+}
+
+.profile-form {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.form-grid,
+.readonly-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+label {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--muted);
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+
+.readonly-grid div {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface-solid);
+}
+
+.readonly-grid span,
+.readonly-grid strong {
+  display: block;
+}
+
+.readonly-grid span {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.readonly-grid strong {
+  margin-top: 0.4rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.5rem;
+}
+
+@media (max-width: 800px) {
+  .form-grid,
+  .readonly-grid {
+    grid-template-columns: 1fr;
+  }
+}

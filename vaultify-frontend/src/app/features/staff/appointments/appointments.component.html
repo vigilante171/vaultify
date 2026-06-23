@@ -1,0 +1,59 @@
+<section class="staff-page">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">STAFF</span>
+      <h1 class="page-title">My Appointments</h1>
+      <p class="page-subtitle">
+        View scheduled salon appointments assigned to your workspace.
+      </p>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <div class="message error luxury-card">{{ errorMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="message luxury-card">Loading appointments...</div>
+  }
+
+  @if (!loading) {
+    <div class="table-wrap luxury-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Price</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (appointment of appointments; track $index) {
+            <tr>
+              <td>
+                <strong>{{ appointment.clientName || appointment.clientId }}</strong>
+                <span>{{ appointment.notes || 'No notes' }}</span>
+              </td>
+
+              <td>{{ appointment.serviceName || appointment.serviceId }}</td>
+              <td>{{ appointment.appointmentDateTime }}</td>
+              <td><span class="pill">{{ appointment.status }}</span></td>
+              <td>{{ appointment.price || 0 }} TND</td>
+              <td>{{ appointment.durationMinutes || 0 }} min</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">
+                <div class="empty-state">No appointments found.</div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

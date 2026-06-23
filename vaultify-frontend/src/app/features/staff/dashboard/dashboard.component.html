@@ -1,0 +1,73 @@
+<section class="staff-dashboard">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">STAFF</span>
+      <h1 class="page-title">Daily Atelier</h1>
+      <p class="page-subtitle">
+        Your refined daily workspace for appointments, clients, and services.
+      </p>
+    </div>
+
+    <button class="luxury-button secondary" type="button" (click)="loadDashboard()">
+      Refresh
+    </button>
+  </div>
+
+  @if (loading) {
+    <div class="message luxury-card">Loading staff dashboard...</div>
+  }
+
+  @if (errorMessage) {
+    <div class="message error luxury-card">{{ errorMessage }}</div>
+  }
+
+  @if (!loading && !errorMessage) {
+    <div class="stats-grid">
+      @for (stat of stats; track stat.label) {
+        <article class="stat-card luxury-card">
+          <span>{{ stat.label }}</span>
+          <strong>{{ stat.value }}</strong>
+          <p>{{ stat.hint }}</p>
+        </article>
+      }
+    </div>
+
+    <div class="dashboard-grid">
+      <article class="luxury-card panel">
+        <span class="badge">NEXT</span>
+        <h2>Upcoming Appointment</h2>
+
+        @if (nextAppointment) {
+          <div class="appointment-card">
+            <strong>{{ nextAppointment.clientName || nextAppointment.clientId }}</strong>
+            <span>{{ nextAppointment.serviceName || nextAppointment.serviceId }}</span>
+            <p>{{ nextAppointment.appointmentDateTime }}</p>
+            <small>{{ nextAppointment.status }}</small>
+          </div>
+        } @else {
+          <p class="muted">No upcoming appointment found.</p>
+        }
+      </article>
+
+      <article class="luxury-card panel">
+        <span class="badge">TODAY</span>
+        <h2>Todays Schedule</h2>
+
+        <div class="mini-list">
+          @for (appointment of todayAppointments; track $index) {
+            <div class="mini-row">
+              <div>
+                <strong>{{ appointment.clientName || appointment.clientId }}</strong>
+                <span>{{ appointment.serviceName || appointment.serviceId }}</span>
+              </div>
+
+              <small>{{ appointment.status }}</small>
+            </div>
+          } @empty {
+            <p class="muted">No appointments scheduled today.</p>
+          }
+        </div>
+      </article>
+    </div>
+  }
+</section>

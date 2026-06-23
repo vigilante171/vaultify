@@ -1,0 +1,63 @@
+<section class="audit-page">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">SUPER ADMIN</span>
+      <h1 class="page-title">Audit Ledger</h1>
+      <p class="page-subtitle">
+        Every important platform action is recorded for traceability and control.
+      </p>
+    </div>
+
+    <button class="luxury-button secondary" type="button" (click)="loadLogs()">
+      Refresh
+    </button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="message error luxury-card">{{ errorMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="message luxury-card">Loading audit logs...</div>
+  }
+
+  @if (!loading) {
+    <div class="table-wrap luxury-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Actor</th>
+            <th>Role</th>
+            <th>Target</th>
+            <th>Description</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (log of logs; track $index) {
+            <tr>
+              <td><span class="pill">{{ log.action }}</span></td>
+              <td>{{ log.actorEmail }}</td>
+              <td>{{ log.actorRole }}</td>
+              <td>
+                <strong>{{ log.targetType }}</strong>
+                <span>{{ log.targetId }}</span>
+              </td>
+              <td>{{ log.description }}</td>
+              <td>{{ log.createdAt || '-' }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">
+                <div class="empty-state">No audit logs found.</div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
+

@@ -1,0 +1,49 @@
+<div class="app-shell">
+  <aside class="sidebar luxury-card">
+    <div class="brand">
+      <div class="brand-mark">V</div>
+      <div>
+        <strong>Vaultify</strong>
+        <span>Private salon suite</span>
+      </div>
+    </div>
+
+    <nav>
+      @for (item of visibleNavItems; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span>{{ item.icon }}</span>
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar">
+          {{ user?.fullName?.charAt(0) || 'V' }}
+        </div>
+
+        <div>
+          <strong>{{ user?.fullName || 'Vaultify User' }}</strong>
+          <span>{{ user?.role || 'ROLE' }}</span>
+        </div>
+      </div>
+
+      <button class="theme-button" type="button" (click)="toggleTheme()">
+        {{ darkMode ? ' Light' : ' Dark' }}
+      </button>
+
+      <button class="logout-button" type="button" (click)="logout()">
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

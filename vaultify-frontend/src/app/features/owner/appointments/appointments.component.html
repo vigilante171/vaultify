@@ -1,0 +1,152 @@
+<section class="appointments-page">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">OWNER</span>
+      <h1 class="page-title">Appointments</h1>
+      <p class="page-subtitle">
+        Schedule clients, assign services, and manage salon reservation status.
+      </p>
+    </div>
+
+    <button class="luxury-button" type="button" (click)="showCreateForm = !showCreateForm">
+      {{ showCreateForm ? 'Close Form' : '+ New Appointment' }}
+    </button>
+  </div>
+
+  @if (showCreateForm) {
+    <form class="create-form luxury-card" (ngSubmit)="createAppointment()">
+      <div class="form-grid">
+        <label>
+          Client
+          <select class="input" name="clientId" [(ngModel)]="form.clientId">
+            <option value="">Choose client</option>
+            @for (client of clients; track $index) {
+              <option [value]="getClientId(client)">
+                {{ client.fullName }}  {{ client.phone }}
+              </option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Service
+          <select class="input" name="serviceId" [(ngModel)]="form.serviceId">
+            <option value="">Choose service</option>
+            @for (service of services; track $index) {
+              <option [value]="getServiceId(service)">
+                {{ service.name }}  {{ service.price }} TND
+              </option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Date & Time
+          <input
+            class="input"
+            type="datetime-local"
+            name="appointmentDateTime"
+            [(ngModel)]="form.appointmentDateTime"
+          />
+        </label>
+
+        <label>
+          Notes
+          <input class="input" name="notes" [(ngModel)]="form.notes" />
+        </label>
+      </div>
+
+      <button class="luxury-button" type="submit" [disabled]="saving">
+        {{ saving ? 'Creating...' : 'Create Appointment' }}
+      </button>
+    </form>
+  }
+
+  @if (errorMessage) {
+    <div class="message error luxury-card">{{ errorMessage }}</div>
+  }
+
+  @if (successMessage) {
+    <div class="message success luxury-card">{{ successMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="message luxury-card">Loading appointments...</div>
+  }
+
+  @if (!loading) {
+    <div class="table-wrap luxury-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Price</th>
+            <th>Duration</th>
+            <th>Workflow</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (appointment of appointments; track $index) {
+            <tr>
+              <td>
+                <strong>{{ appointment.clientName || appointment.clientId }}</strong>
+                <span>{{ appointment.notes || 'No notes' }}</span>
+              </td>
+
+              <td>{{ appointment.serviceName || appointment.serviceId }}</td>
+              <td>{{ appointment.appointmentDateTime }}</td>
+
+              <td>
+                <span class="pill">{{ appointment.status }}</span>
+              </td>
+
+              <td>{{ appointment.price || 0 }} TND</td>
+              <td>{{ appointment.durationMinutes || 0 }} min</td>
+
+              <td>
+                <div class="workflow-actions">
+                  <select
+                    class="input mini-select"
+                    [name]="'status-' + getAppointmentId(appointment)"
+                    [(ngModel)]="statusDrafts[getAppointmentId(appointment)]"
+                  >
+                    @for (status of statuses; track status) {
+                      <option [value]="status">{{ status }}</option>
+                    }
+                  </select>
+
+                  <button
+                    class="mini-button"
+                    type="button"
+                    [disabled]="savingAppointmentId === getAppointmentId(appointment)"
+                    (click)="updateStatus(appointment)"
+                  >
+                    {{ savingAppointmentId === getAppointmentId(appointment) ? 'Saving...' : 'Save' }}
+                  </button>
+
+                  <button class="mini-button good" type="button" (click)="quickStatus(appointment, 'COMPLETED')">
+                    Complete
+                  </button>
+
+                  <button class="mini-button danger" type="button" (click)="cancelAppointment(appointment)">
+                    Cancel
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7">
+                <div class="empty-state">No appointments found.</div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

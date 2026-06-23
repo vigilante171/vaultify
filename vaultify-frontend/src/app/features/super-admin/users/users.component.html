@@ -1,0 +1,93 @@
+<section class="users-page">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">SUPER ADMIN</span>
+      <h1 class="page-title">User Registry</h1>
+      <p class="page-subtitle">
+        Control platform access across super admins, business owners, and staff.
+      </p>
+    </div>
+  </div>
+
+  <div class="toolbar luxury-card">
+    <label>
+      Filter by role
+      <select class="input" name="role" [(ngModel)]="selectedRole" (change)="loadUsers()">
+        @for (role of roles; track role) {
+          <option [value]="role">{{ role }}</option>
+        }
+      </select>
+    </label>
+
+    <button class="luxury-button secondary" type="button" (click)="loadUsers()">
+      Refresh
+    </button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="message error luxury-card">{{ errorMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="message luxury-card">Loading users...</div>
+  }
+
+  @if (!loading) {
+    <div class="table-wrap luxury-card">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Role</th>
+            <th>Business ID</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (user of users; track user.id) {
+            <tr>
+              <td>
+                <strong>{{ user.fullName }}</strong>
+                <span>{{ user.email }}</span>
+              </td>
+
+              <td>
+                <span class="pill">{{ user.role }}</span>
+              </td>
+
+              <td>{{ user.businessId || 'Platform' }}</td>
+
+              <td>
+                <span class="pill" [class.good]="user.active" [class.bad]="!user.active">
+                  {{ user.active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+
+              <td>{{ user.createdAt || '-' }}</td>
+
+              <td>
+                <button
+                  class="mini-button"
+                  type="button"
+                  [disabled]="savingUserId === user.id"
+                  (click)="toggleStatus(user)"
+                >
+                  {{ user.active ? 'Disable' : 'Enable' }}
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">
+                <div class="empty-state">No users found.</div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

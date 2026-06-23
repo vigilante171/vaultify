@@ -1,0 +1,113 @@
+<section class="services-page">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">OWNER</span>
+      <h1 class="page-title">Service Menu</h1>
+      <p class="page-subtitle">
+        Curate your salon offers with prices and durations.
+      </p>
+    </div>
+
+    <button class="luxury-button" type="button" (click)="showCreateForm = !showCreateForm">
+      {{ showCreateForm ? 'Close Form' : '+ New Service' }}
+    </button>
+  </div>
+
+  @if (showCreateForm) {
+    <form class="create-form luxury-card" (ngSubmit)="createService()">
+      <div class="form-grid">
+        <label>
+          Name
+          <input class="input" name="name" [(ngModel)]="form.name" />
+        </label>
+
+        <label>
+          Category
+          <select class="input" name="category" [(ngModel)]="form.category">
+            @for (category of categories; track category) {
+              <option [value]="category">{{ category }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Price
+          <input class="input" type="number" name="price" [(ngModel)]="form.price" />
+        </label>
+
+        <label>
+          Duration Minutes
+          <input class="input" type="number" name="durationMinutes" [(ngModel)]="form.durationMinutes" />
+        </label>
+
+        <label class="full">
+          Description
+          <input class="input" name="description" [(ngModel)]="form.description" />
+        </label>
+      </div>
+
+      <button class="luxury-button" type="submit" [disabled]="saving">
+        {{ saving ? 'Creating...' : 'Create Service' }}
+      </button>
+    </form>
+  }
+
+  @if (errorMessage) {
+    <div class="message error luxury-card">{{ errorMessage }}</div>
+  }
+
+  @if (successMessage) {
+    <div class="message success luxury-card">{{ successMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="message luxury-card">Loading services...</div>
+  }
+
+  @if (!loading) {
+    <div class="table-wrap luxury-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Duration</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (service of services; track service.id) {
+            <tr>
+              <td>
+                <strong>{{ service.name }}</strong>
+                <span>{{ service.description }}</span>
+              </td>
+              <td>{{ service.category }}</td>
+              <td>{{ service.price }} TND</td>
+              <td>{{ service.durationMinutes }} min</td>
+              <td>
+                <span class="pill" [class.good]="service.active" [class.bad]="!service.active">
+                  {{ service.active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td>
+                <button class="mini-button" type="button" (click)="disableService(service)">
+                  Disable
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">
+                <div class="empty-state">No services found.</div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

@@ -1,0 +1,108 @@
+<section class="staff-page">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">OWNER</span>
+      <h1 class="page-title">Staff Atelier</h1>
+      <p class="page-subtitle">
+        Manage employee accounts for your salon workspace.
+      </p>
+    </div>
+
+    <button class="luxury-button" type="button" (click)="showCreateForm = !showCreateForm">
+      {{ showCreateForm ? 'Close Form' : '+ New Staff' }}
+    </button>
+  </div>
+
+  @if (showCreateForm) {
+    <form class="create-form luxury-card" (ngSubmit)="createStaff()">
+      <div class="form-grid">
+        <label>
+          Full Name
+          <input class="input" name="fullName" [(ngModel)]="form.fullName" />
+        </label>
+
+        <label>
+          Email
+          <input class="input" type="email" name="email" [(ngModel)]="form.email" />
+        </label>
+
+        <label>
+          Password
+          <input class="input" type="text" name="password" [(ngModel)]="form.password" />
+        </label>
+
+        <label>
+          Phone
+          <input class="input" name="phone" [(ngModel)]="form.phone" />
+        </label>
+      </div>
+
+      <button class="luxury-button" type="submit" [disabled]="saving">
+        {{ saving ? 'Creating...' : 'Create Staff' }}
+      </button>
+    </form>
+  }
+
+  @if (errorMessage) {
+    <div class="message error luxury-card">{{ errorMessage }}</div>
+  }
+
+  @if (successMessage) {
+    <div class="message success luxury-card">{{ successMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="message luxury-card">Loading staff...</div>
+  }
+
+  @if (!loading) {
+    <div class="table-wrap luxury-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Staff</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (member of staff; track $index) {
+            <tr>
+              <td>
+                <strong>{{ member.fullName }}</strong>
+                <span>{{ member.email }}</span>
+              </td>
+
+              <td>
+                <span class="pill">{{ member.role || 'STAFF' }}</span>
+              </td>
+
+              <td>
+                <span class="pill" [class.good]="member.active" [class.bad]="!member.active">
+                  {{ member.active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+
+              <td>{{ member.createdAt || '-' }}</td>
+
+              <td>
+                <button class="mini-button" type="button" (click)="disableStaff(member)">
+                  Disable
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5">
+                <div class="empty-state">No staff members found.</div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

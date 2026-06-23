@@ -1,0 +1,103 @@
+<div class="login-page">
+  <button class="theme-toggle" type="button" (click)="toggleTheme()">
+    {{ darkMode ? ' Light Mode' : ' Dark Mode' }}
+  </button>
+
+  <section class="hero">
+    <div class="brand">
+      <div class="brand-mark">V</div>
+      <div>
+        <strong>Vaultify</strong>
+        <span>Salon command center</span>
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <span class="badge">Old-money SaaS for premium salons</span>
+
+      <h1 class="page-title">
+        Manage every salon like a private maison.
+      </h1>
+
+      <p class="page-subtitle">
+        A refined dashboard for barbers, hair salons, subscriptions,
+        appointments, clients, staff, and business performance.
+      </p>
+
+      <div class="hero-stats">
+        <div>
+          <strong>3</strong>
+          <span>Roles</span>
+        </div>
+
+        <div>
+          <strong>24/7</strong>
+          <span>Access</span>
+        </div>
+
+        <div>
+          <strong>Multi</strong>
+          <span>Tenant</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="login-card luxury-card">
+    <div class="card-header">
+      <span class="badge">Secure access</span>
+      <h2>Welcome back</h2>
+      <p>Sign in to enter your Vaultify workspace.</p>
+    </div>
+
+    <form (ngSubmit)="login()">
+      <label>
+        Email
+        <input
+          class="input"
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="admin@vaultify.com"
+        />
+      </label>
+
+      <label>
+        Password
+        <input
+          class="input"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Admin@12345"
+        />
+      </label>
+
+      @if (errorMessage) {
+        <div class="error">
+          {{ errorMessage }}
+        </div>
+      }
+
+      <button class="luxury-button" type="submit" [disabled]="loading">
+        {{ loading ? 'Entering...' : 'Enter Vaultify' }}
+      </button>
+    </form>
+
+    <div class="demo-users">
+      <p>Demo accounts</p>
+
+      <button type="button" (click)="email='admin@vaultify.com'; password='Admin@12345'">
+        Super Admin
+      </button>
+
+      <button type="button" (click)="email='yassine@royalcut.com'; password='Owner@12345'">
+        Owner
+      </button>
+
+      <button type="button" (click)="email='staff@royalcut.com'; password='Staff@12345'">
+        Staff
+      </button>
+    </div>
+  </section>
+</div>

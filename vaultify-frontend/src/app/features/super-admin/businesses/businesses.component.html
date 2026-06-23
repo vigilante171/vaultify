@@ -1,0 +1,242 @@
+<section class="businesses-page">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">SUPER ADMIN</span>
+      <h1 class="page-title">Business Portfolio</h1>
+      <p class="page-subtitle">
+        Manage all salons, barbers, subscriptions, and access status from one control room.
+      </p>
+    </div>
+
+    <button class="luxury-button" type="button" (click)="toggleCreateForm()">
+      {{ showCreateForm ? 'Close Form' : '+ Create Business' }}
+    </button>
+  </div>
+
+  @if (showCreateForm) {
+    <form class="create-form luxury-card" (ngSubmit)="createBusiness()">
+      <div class="form-head">
+        <span class="badge">New Maison</span>
+        <h2>Create Business</h2>
+      </div>
+
+      <div class="form-grid">
+        <label>
+          Business Name
+          <input class="input" name="businessName" [(ngModel)]="form.businessName" />
+        </label>
+
+        <label>
+          Business Type
+          <select class="input" name="businessType" [(ngModel)]="form.businessType">
+            @for (type of businessTypes; track type) {
+              <option [value]="type">{{ type }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Owner Name
+          <input class="input" name="ownerName" [(ngModel)]="form.ownerName" />
+        </label>
+
+        <label>
+          Owner Email
+          <input class="input" type="email" name="ownerEmail" [(ngModel)]="form.ownerEmail" />
+        </label>
+
+        <label>
+          Owner Password
+          <input class="input" type="text" name="ownerPassword" [(ngModel)]="form.ownerPassword" />
+        </label>
+
+        <label>
+          Plan
+          <select class="input" name="plan" [(ngModel)]="form.plan">
+            @for (plan of plans; track plan) {
+              <option [value]="plan">{{ plan }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Phone
+          <input class="input" name="phone" [(ngModel)]="form.phone" />
+        </label>
+
+        <label>
+          Address
+          <input class="input" name="address" [(ngModel)]="form.address" />
+        </label>
+      </div>
+
+      <button class="luxury-button" type="submit" [disabled]="saving">
+        {{ saving ? 'Creating...' : 'Create Business' }}
+      </button>
+    </form>
+  }
+
+  <div class="toolbar luxury-card">
+    <input
+      class="input"
+      placeholder="Search business by name..."
+      name="search"
+      [(ngModel)]="searchQuery"
+      (keyup.enter)="search()"
+    />
+
+    <button class="luxury-button secondary" type="button" (click)="search()">
+      Search
+    </button>
+
+    <button class="luxury-button secondary" type="button" (click)="loadBusinesses()">
+      Reset
+    </button>
+  </div>
+
+  <section class="management-grid">
+    <div class="luxury-card management-card">
+      <span class="badge">CONTROL</span>
+      <h2>Business Control</h2>
+
+      <label>
+        Select Business
+        <select class="input" name="selectedBusinessId" [(ngModel)]="selectedBusinessId" (change)="onSelectedBusinessChange()">
+          @for (business of businesses; track $index) {
+            <option [value]="getBusinessId(business)">
+              {{ business.name }}  {{ business.ownerName }}
+            </option>
+          }
+        </select>
+      </label>
+
+      @if (selectedBusiness) {
+        <div class="selected-summary">
+          <div>
+            <span>Current Plan</span>
+            <strong>{{ selectedBusiness.plan }}</strong>
+          </div>
+
+          <div>
+            <span>Subscription</span>
+            <strong>{{ selectedBusiness.subscriptionStatus }}</strong>
+          </div>
+
+          <div>
+            <span>Status</span>
+            <strong>{{ selectedBusiness.active ? 'Active' : 'Inactive' }}</strong>
+          </div>
+        </div>
+      }
+    </div>
+
+    <form class="luxury-card management-card" (ngSubmit)="updateSubscription()">
+      <span class="badge">SUBSCRIPTION</span>
+      <h2>Update Subscription</h2>
+
+      <label>
+        Plan
+        <select class="input" name="subscriptionPlan" [(ngModel)]="subscriptionForm.plan">
+          @for (plan of plans; track plan) {
+            <option [value]="plan">{{ plan }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Subscription Status
+        <select class="input" name="subscriptionStatus" [(ngModel)]="subscriptionForm.subscriptionStatus">
+          @for (status of subscriptionStatuses; track status) {
+            <option [value]="status">{{ status }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        End Date
+        <input class="input" type="date" name="subscriptionEndDate" [(ngModel)]="subscriptionForm.subscriptionEndDate" />
+      </label>
+
+      <button class="luxury-button" type="submit" [disabled]="savingSubscription">
+        {{ savingSubscription ? 'Saving...' : 'Save Subscription' }}
+      </button>
+    </form>
+
+    <form class="luxury-card management-card" (ngSubmit)="updateStatus()">
+      <span class="badge">ACCESS</span>
+      <h2>Update Business Status</h2>
+
+      <label>
+        Active
+        <select class="input" name="active" [(ngModel)]="statusForm.active">
+          <option [ngValue]="true">Active</option>
+          <option [ngValue]="false">Inactive</option>
+        </select>
+      </label>
+
+      <button class="luxury-button" type="submit" [disabled]="savingStatus">
+        {{ savingStatus ? 'Saving...' : 'Save Status' }}
+      </button>
+    </form>
+  </section>
+
+  @if (errorMessage) {
+    <div class="message error luxury-card">{{ errorMessage }}</div>
+  }
+
+  @if (successMessage) {
+    <div class="message success luxury-card">{{ successMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="message luxury-card">Loading businesses...</div>
+  }
+
+  @if (!loading) {
+    <div class="table-wrap luxury-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Business</th>
+            <th>Type</th>
+            <th>Owner</th>
+            <th>Plan</th>
+            <th>Subscription</th>
+            <th>Active</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (business of businesses; track $index) {
+            <tr>
+              <td>
+                <strong>{{ business.name }}</strong>
+                <span>{{ business.phone || 'No phone' }}</span>
+              </td>
+
+              <td>{{ business.type }}</td>
+              <td>{{ business.ownerName }}</td>
+              <td>{{ business.plan }}</td>
+
+              <td>
+                <span class="pill">{{ business.subscriptionStatus }}</span>
+              </td>
+
+              <td>
+                <span class="pill" [class.good]="business.active" [class.bad]="!business.active">
+                  {{ business.active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">
+                <div class="empty-state">No businesses found.</div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

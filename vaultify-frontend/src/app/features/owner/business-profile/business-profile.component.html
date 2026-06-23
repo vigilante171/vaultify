@@ -1,0 +1,65 @@
+<section class="profile-page">
+  <div class="hero luxury-card">
+    <div>
+      <span class="badge">OWNER</span>
+      <h1 class="page-title">Business Profile</h1>
+      <p class="page-subtitle">
+        Keep your salon identity polished and up to date.
+      </p>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="message luxury-card">Loading business profile...</div>
+  }
+
+  @if (errorMessage) {
+    <div class="message error luxury-card">{{ errorMessage }}</div>
+  }
+
+  @if (successMessage) {
+    <div class="message success luxury-card">{{ successMessage }}</div>
+  }
+
+  @if (!loading) {
+    <form class="profile-form luxury-card" (ngSubmit)="save()">
+      <div class="form-grid">
+        <label>
+          Business Name
+          <input class="input" name="businessName" [(ngModel)]="form.businessName" />
+        </label>
+
+        <label>
+          Phone
+          <input class="input" name="phone" [(ngModel)]="form.phone" />
+        </label>
+
+        <label>
+          Address
+          <input class="input" name="address" [(ngModel)]="form.address" />
+        </label>
+
+        <label>
+          Logo URL
+          <input class="input" name="logoUrl" [(ngModel)]="form.logoUrl" />
+        </label>
+      </div>
+
+      <div class="readonly-grid">
+        <div>
+          <span>Plan</span>
+          <strong>{{ business?.plan }}</strong>
+        </div>
+
+        <div>
+          <span>Subscription</span>
+          <strong>{{ business?.subscriptionStatus }}</strong>
+        </div>
+      </div>
+
+      <button class="luxury-button" type="submit" [disabled]="saving">
+        {{ saving ? 'Saving...' : 'Save Profile' }}
+      </button>
+    </form>
+  }
+</section>
