@@ -33,3 +33,6 @@ Thumbs.db
 
 # Build outputs
 build-output.txt
+
+# Allow safe Render profile config
+!vaultify-backend/src/main/resources/application-render.properties
