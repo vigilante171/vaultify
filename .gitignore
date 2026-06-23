@@ -1,0 +1,35 @@
+# Node / Angular
+node_modules/
+dist/
+.angular/
+coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Java / Maven / Spring Boot
+target/
+*.class
+*.jar
+*.war
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment / Secrets
+.env
+.env.*
+**/src/main/resources/application.properties
+**/src/main/resources/application-*.properties
+
+# Build outputs
+build-output.txt
